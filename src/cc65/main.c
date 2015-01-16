@@ -104,6 +104,7 @@ static void Usage (void)
             "\n"
             "Long options:\n"
             "  --add-source\t\t\tInclude source as comment\n"
+            "  --all-fastcall\t\tAll non variadic functions are fastcall\n"
             "  --bss-name seg\t\tSet the name of the BSS segment\n"
             "  --check-stack\t\t\tGenerate stack overflow checks\n"
             "  --code-name seg\t\tSet the name of the CODE segment\n"
@@ -342,6 +343,14 @@ static void OptAddSource (const char* Opt attribute ((unused)),
 /* Add source lines as comments in generated assembler file */
 {
     AddSource = 1;
+}
+
+
+static void OptAllFastcall (const char* Opt attribute ((unused)),
+                          const char* Arg attribute ((unused)))
+/* Add source lines as comments in generated assembler file */
+{
+    AutoFast = 1;
 }
 
 
@@ -786,6 +795,7 @@ int main (int argc, char* argv[])
     /* Program long options */
     static const LongOpt OptTab[] = {
         { "--add-source",       0,      OptAddSource            },
+        { "--all-fastcall",     0,      OptAllFastcall          },
         { "--bss-name",         1,      OptBssName              },
         { "--check-stack",      0,      OptCheckStack           },
         { "--code-name",        1,      OptCodeName             },

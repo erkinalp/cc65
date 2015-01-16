@@ -52,9 +52,11 @@
 
 /* Options */
 extern unsigned char    AddSource;              /* Add source lines as comments */
+extern unsigned char    AutoFast;               /* Automatically make non varadic functions fastcall */
 extern unsigned char    DebugInfo;              /* Add debug info to the obj */
 extern unsigned char    PreprocessOnly;         /* Just preprocess the input */
 extern unsigned char    DebugOptOutput;         /* Output debug stuff */
+extern unsigned char	DisableStdIncludes;	/* Don't add default include paths */
 extern unsigned         RegisterSpace;          /* Space available for register vars */
 
 /* Stackable options */

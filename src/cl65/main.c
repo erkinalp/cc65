@@ -722,6 +722,7 @@ static void Usage (void)
             "\n"
             "Long options:\n"
             "  --add-source\t\t\tInclude source as comment\n"
+            "  --all-fastcall\t\tAll non variadic functions are fastcall\n"
             "  --asm-args options\t\tPass options to the assembler\n"
             "  --asm-define sym[=v]\t\tDefine an assembler symbol\n"
             "  --asm-include-dir dir\t\tSet an assembler include directory\n"
@@ -781,6 +782,13 @@ static void OptAddSource (const char* Opt attribute ((unused)),
 /* Strict source code as comments to the generated asm code */
 {
     CmdAddArg (&CC65, "-T");
+}
+
+static void OptAutoFastcall (const char* Opt attribute ((unused)),
+                          const char* Arg attribute ((unused)))
+/* Make everything that can be fastcall use fastcall */
+{
+    CmdAddArg (&CC65, "--all-fastcall");
 }
 
 
@@ -1241,6 +1249,7 @@ int main (int argc, char* argv [])
     /* Program long options */
     static const LongOpt OptTab[] = {
         { "--add-source",       0,      OptAddSource            },
+        { "--all-fastcall",     0,      OptAutoFastcall         },
         { "--asm-args",         1,      OptAsmArgs              },
         { "--asm-define",       1,      OptAsmDefine            },
         { "--asm-include-dir",  1,      OptAsmIncludeDir        },

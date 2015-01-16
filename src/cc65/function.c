@@ -438,7 +438,7 @@ void NewFunc (SymEntry* Func)
         CurrentFunc->Flags |= FF_IS_MAIN;
 
         /* Main cannot be a fastcall function */
-        if (IsQualFastcall (Func->Type)) {
+        if (IsQualFastcall (Func->Type) && !AutoFast) {
             Error ("`main' cannot be declared as __fastcall__");
         }
 

@@ -336,6 +336,9 @@ static void FixQualifiers (Type* DataType)
     while (T->C != T_END) {
         if (IsTypePtr (T)) {
 
+            if (AutoFast && IsTypeFunc(T+1))
+                T[1].C |= T_QUAL_FASTCALL;
+
             /* Fastcall qualifier on the pointer? */
             if (IsQualFastcall (T)) {
                 /* Pointer to function which is not fastcall? */
@@ -1382,7 +1385,7 @@ static void Declarator (const DeclSpec* Spec, Declaration* D, declmode_t Mode)
     ** qualifier will later be transfered to the function itself. If it's a
     ** pointer to something else, it will be flagged as an error.
     */
-    TypeCode Qualifiers = OptionalQualifiers (T_QUAL_ADDRSIZE | T_QUAL_FASTCALL);
+    TypeCode Qualifiers = OptionalQualifiers (T_QUAL_ADDRSIZE | T_QUAL_FASTCALL | T_QUAL_CDECL);
 
     /* Pointer to something */
     if (CurTok.Tok == TOK_STAR) {
@@ -1441,11 +1444,18 @@ static void Declarator (const DeclSpec* Spec, Declaration* D, declmode_t Mode)
             /* Parse the function declaration */
             F = ParseFuncDecl ();
 
-            /* We cannot specify fastcall for variadic functions */
-            if ((F->Flags & FD_VARIADIC) && (Qualifiers & T_QUAL_FASTCALL)) {
-                Error ("Variadic functions cannot be `__fastcall__'");
-                Qualifiers &= ~T_QUAL_FASTCALL;
-            }
+            if (AutoFast) {
+		if ((F->Flags & FD_VARIADIC) || (Qualifiers & T_QUAL_CDECL))
+		    Qualifiers &= ~T_QUAL_FASTCALL;
+		else
+		    Qualifiers |= T_QUAL_FASTCALL;
+	    } else {
+                /* We cannot specify fastcall for variadic functions */
+                if ((F->Flags & FD_VARIADIC) && (Qualifiers & T_QUAL_FASTCALL)) {
+                    Error ("Variadic functions cannot be `__fastcall__'");
+                    Qualifiers &= ~T_QUAL_FASTCALL;
+		}
+	    }
 
             /* Add the function type. Be sure to bounds check the type buffer */
             NeedTypeSpace (D, 1);

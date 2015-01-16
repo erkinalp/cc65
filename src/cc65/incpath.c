@@ -34,6 +34,7 @@
 
 
 /* cc65 */
+#include "global.h"
 #include "incpath.h"
 
 

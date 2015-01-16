@@ -44,6 +44,7 @@
 
 
 unsigned char AddSource         = 0;    /* Add source lines as comments */
+unsigned char AutoFast          = 0;    /* All calls that can be are fastcall */
 unsigned char DebugInfo         = 0;    /* Add debug info to the obj */
 unsigned char PreprocessOnly    = 0;    /* Just preprocess the input */
 unsigned char DebugOptOutput    = 0;    /* Output debug stuff */
